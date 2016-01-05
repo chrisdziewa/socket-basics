@@ -8,11 +8,13 @@
   </head>
 
   <body>
-    <h1>Join Chat</h1>
-    <form action="/chat.html">
-      <label>Display Name</label>
-      <input type="text" name="name" />
-      <input type="submit" value="Join Chat">
+    <a href="/">Change settings</a>
+    <div class="messages">
+      <!-- Messenges end up here! -->
+    </div>
+    <form id="message-form">
+      <input type="text" name="message" />
+      <input type="submit" />
     </form>
     <script src="/js/jquery-2.1.4.min.js"></script>
     <script src="/js/socket.io-1.3.7.js">

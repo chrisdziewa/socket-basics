@@ -3,19 +3,25 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var moment = require('moment');
 
 app.use(express.static(__dirname + '/public'));
 io.on('connection', function(socket) {
-  console.log('User connected via socket.io!');
-  socket.on('message', function(message) {
-    console.log('Message received: ' + message.text);
-    io.emit('message', message);
-  });
-  socket.emit('message', {
-    text: 'Welcome to the chat application'
-  });
+	console.log('User connected via socket.io!');
+	socket.on('message', function(message) {
+		var timestamp = moment().valueOf();	
+		message.timestamp = timestamp;
+		console.log('Message received @ '  + moment.utc(message.timestamp).local().format('h:mm a') + ': ' + message.text); // + message.timestamp.local().format('h:mm a') + ' '
+		io.emit('message', message);
+	});
+
+	// timestamp property - Javascript timestamp (milliseconds)
+		socket.emit('message', {
+			text: 'Welcome to the chat application',
+			timestamp: moment().valueOf()
+		});
 });
 
 http.listen(PORT, function() {
-  console.log('Server listening on port ' + PORT);
+	console.log('Server listening on port ' + PORT);
 });

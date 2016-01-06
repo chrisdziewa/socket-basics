@@ -14,7 +14,7 @@ function sendCurrentUsers(socket) {
 	var users = [];
 	if (typeof info === 'undefined') {
 		return;
-	} 
+	}
 	Object.keys(clientInfo).forEach(function(socketId) {
 		if (clientInfo[socketId].room === info.room) {
 			users.push(clientInfo[socketId].name);
@@ -25,6 +25,41 @@ function sendCurrentUsers(socket) {
 		text: 'Current users: ' + users.join(', '),
 		timestamp: moment().valueOf()
 	});
+}
+
+// My original code - not part of tutorial
+function sendPrivateMessage(socket, message) {
+	var sender = clientInfo[socket.id];
+	var timestamp = moment().valueOf();
+	var receiver;
+	var messageSent = false;
+	Object.keys(clientInfo).forEach(function(socketId) {
+		receiver = clientInfo[socketId].name;
+		if (message.text.toLowerCase().indexOf(receiver.toLowerCase()) === 1) {
+			var shortMessage = message.text.slice(receiver.length + 1);
+			io.to(socketId).emit('message', {
+				name: '<strong>Private Message from: </strong>' + sender.name,
+				text: shortMessage,
+				timestamp: timestamp
+			});
+			socket.emit('message', {
+				name: 'PM - ' + sender.name + ' to ' + receiver + ':',
+				text: shortMessage,
+				timestamp: timestamp
+			});
+			console.log('PM from ' + sender + ' to ' + receiver + ':');
+			console.log(shortMessage);
+			messageSent = true;
+		}
+	});
+	// No user found
+	if (!messageSent) {
+		socket.emit('message', {
+			name: 'System',
+			text: 'No user\' ' + receiver.slice(1) + '\' was found in the chat',
+			timestamp: timestamp
+		});
+	}
 }
 
 io.on('connection', function(socket) {
@@ -59,6 +94,8 @@ io.on('connection', function(socket) {
 
 		if (message.text === '@currentUsers') {
 			sendCurrentUsers(socket);
+		} else if ((/^\@[a-zA-Z ]+/).test(message.text)) {
+			sendPrivateMessage(socket, message);
 		} else {
 			message.timestamp = moment().valueOf();
 			io.to(clientInfo[socket.id].room).emit('message', message);

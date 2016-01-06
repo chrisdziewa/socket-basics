@@ -4,18 +4,12 @@ var socket = io();
 socket.on('message', function(message) {
 	var localTime = moment.utc(message.timeStamp).local().format('h:mm a');
 	var $message = $('.messages');
-	$message.append('<p><strong>' + message.name +
-		' ' + localTime + '</strong>: </p>');
-	$message.append('<p>' + message.text + '</p>');
+	$message.append('<li class="list-group-item"><p class="user"><strong>' + message.name +
+		' ' + localTime + '</strong>:</p><p class="message">' + message.text + '</p>');
 });
 
 socket.on('connect', function() {
 	console.log('Connected to socket.io server!');
-	// var message = name + ' has joined ' + room + ' room';
-	// socket.emit('message', {
-	// 	name: 'System',
-	// 	text: message
-	// });
 	socket.emit('joinRoom', {
 		name: name,
 		room: room

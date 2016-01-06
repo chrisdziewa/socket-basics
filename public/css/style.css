@@ -4,3 +4,15 @@
   display: flex;
   align-items: center;
 }
+
+.message {
+  padding-left: 20px;
+}
+
+.private-from {
+  color: #A2201A;
+}
+
+.private-to {
+  color: #2753A2;
+}

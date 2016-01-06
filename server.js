@@ -38,16 +38,16 @@ function sendPrivateMessage(socket, message) {
 		if (message.text.toLowerCase().indexOf(receiver.toLowerCase()) === 1) {
 			var shortMessage = message.text.slice(receiver.length + 1);
 			io.to(socketId).emit('message', {
-				name: '<strong>Private Message from: </strong>' + sender.name,
+				name: '<strong><span class="private-from">Private Message</span> from: </strong>' + sender.name,
 				text: shortMessage,
 				timestamp: timestamp
 			});
 			socket.emit('message', {
-				name: 'PM - ' + sender.name + ' to ' + receiver + ':',
+				name: '<strong><span class="private-to">Private Message</span></strong> to ' + receiver + ':',
 				text: shortMessage,
 				timestamp: timestamp
 			});
-			console.log('PM from ' + sender + ' to ' + receiver + ':');
+			console.log('Private Message from ' + sender.name + ' to ' + receiver + ':');
 			console.log(shortMessage);
 			messageSent = true;
 		}

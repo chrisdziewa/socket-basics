@@ -6,6 +6,8 @@ socket.on('message', function(message) {
 	var $message = $('.messages');
 	$message.append('<li class="list-group-item"><p class="user"><strong>' + message.name +
 		' ' + localTime + '</strong>:</p><p class="message">' + message.text + '</p>');
+	// scroll to bottom automatically
+	$(".messages").scrollTop($(".messages")[0].scrollHeight);
 });
 
 socket.on('connect', function() {

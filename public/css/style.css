@@ -9,6 +9,7 @@
   padding-left: 20px;
 }
 
+/*Private Messages*/
 .private-from {
   color: #A2201A;
 }
@@ -16,3 +17,25 @@
 .private-to {
   color: #2753A2;
 }
+
+.top-space {
+  margin-top: 35px;
+}
+
+h1 {
+  margin: 24px 0;
+}
+
+/* Messages  panel */
+.well.top-space {
+  height: 500px;
+}
+.messages {
+  height: 250px;
+  overflow-y: auto; 
+}
+
+
+
+
+
